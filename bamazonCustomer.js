@@ -17,6 +17,7 @@ connection.connect(function(err) {
 
 console.log("\nWelcome to Bamazon!");
 
+// Show what's for sale and display the prompt that allows a user to buy something
 function displayItems(){
     connection.query("SELECT * FROM productsForSale", function(err, res) {
       if (err) throw err;
@@ -61,18 +62,20 @@ function displayItems(){
     })    
 };
 
+// Function that runs after the completion of a sale, user can make another purchase or quit
 function whatNext(){
     inquirer.prompt([
         {
             type: "list",
             name: "nextMove",
             message: "What would you like to do next?",
-            choices: ["Leave the store", "Make another purchase"],
+            choices: ["Make another purchase", "Leave the store"],
         }
     ]).then(function(choice){
         if (choice.nextMove === "Leave the store"){
             console.log("\nThanks for stopping by! \n");
             connection.end();
+
         } else if (choice.nextMove === "Make another purchase"){
             displayItems();
         }
